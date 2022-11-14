@@ -1,13 +1,29 @@
-const products = [
-  { name: "gold star", price: 30 },
-  { name: "green shell", price: 10 },
-  { name: "red shell", price: 40 },
-  { name: "banana skin", price: 5 },
-  { name: "mushroom", price: 50 },
-];
+const getTodos = (resource) => {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
 
-const filteredProducts = products
-  .filter((product) => product.price > 20)
-  .map((product) => `the ${product.name} is ${product.price / 2} dollars`);
+    request.addEventListener("readystatechange", () => {
+      if (request.readyState === 4 && request.status === 200) {
+        const data = JSON.parse(request.responseText);
+        resolve(data);
+      } else if (request.readyState === 4) {
+        reject("error getting resource");
+      }
+    });
 
-console.log(filteredProducts);
+    request.open("GET", resource);
+    request.send();
+  });
+};
+
+getTodos("todos.json")
+  .then((data) => {
+    console.log("promise resolved:", data);
+    return getTodos("todos2.json");
+  })
+  .then((data) => {
+    console.log("promise 2 resolved", data);
+  })
+  .catch((err) => {
+    console.log("promise rejected", err);
+  });
