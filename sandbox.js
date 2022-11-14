@@ -1,31 +1,13 @@
-const form = document.querySelector(".signup-form");
-const feedback = document.querySelector(".feedback");
-const usernamePattern = /^[a-zA-Z0-9]{6,12}$/;
+const products = [
+  { name: "gold star", price: 30 },
+  { name: "green shell", price: 10 },
+  { name: "red shell", price: 40 },
+  { name: "banana skin", price: 5 },
+  { name: "mushroom", price: 50 },
+];
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
+const filteredProducts = products
+  .filter((product) => product.price > 20)
+  .map((product) => `the ${product.name} is ${product.price / 2} dollars`);
 
-  //validation
-
-  const username = form.username.value;
-  console.log(usernamePattern.test(username));
-
-  if (usernamePattern.test(username)) {
-    feedback.textContent = "that username is valid";
-  } else {
-    feedback.textContent =
-      "username must be letter only between 6-12 characters long";
-  }
-});
-
-// live feedback
-
-form.username.addEventListener("keyup", (e) => {
-  console.log(e);
-  //console.log(e.target.value, form.username.value);
-  if (usernamePattern.test(e.target.value)) {
-    form.username.setAttribute("class", "success");
-  } else {
-    form.username.setAttribute("class", "error");
-  }
-});
+console.log(filteredProducts);
